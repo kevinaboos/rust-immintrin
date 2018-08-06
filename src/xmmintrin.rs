@@ -9,21 +9,21 @@
 #![allow(unused_variables)]
 
 use conversions::Convert128;
-use std::mem::transmute;
-use std::mem::uninitialized;
-use std::ptr::copy_nonoverlapping;
-use simd;
+use core::mem::transmute;
+use core::mem::uninitialized;
+use core::ptr::copy_nonoverlapping;
+use core::simd::f32x4;
 use __m128;
 use __m128i;
 use __m64;
-use ::simd_shuffle4;
+//use ::simd_shuffle4;
 
-fn convert_bool32fx4_to_m128(a: simd::bool32fx4) -> __m128 {
+fn convert_bool32fx4_to_m128(a: f32x4) -> __m128 {
     unsafe { transmute(a) }
 }
 
 // Declarations copied from the llvmint crate.
-#[allow(improper_ctypes)]
+/* #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.sse.sqrt.ss"]
     pub fn sse_sqrt_ss(a: __m128) -> __m128;
@@ -83,7 +83,7 @@ extern {
     pub fn sse_ldmxcsr(a: *mut i8) -> ();
     #[link_name = "llvm.prefetch"]
     pub fn prefetch(a: *const i8, b: i32, c: i32, d: i32) -> ();
-}
+} */
 
 /// addss
 #[inline]
@@ -126,50 +126,50 @@ pub fn _mm_div_ps(a: __m128, b: __m128) -> __m128 {
     a / b
 }
 /// sqrtss
-#[inline]
+/* #[inline]
 pub fn _mm_sqrt_ss(a: __m128) -> __m128 {
     unsafe { sse_sqrt_ss(a) }
-}
+} */
 /// sqrtps
-#[inline]
+/* #[inline]
 pub fn _mm_sqrt_ps(a: __m128) -> __m128 {
     a.sqrt()
-}
+} */
 /// rcpss
-#[inline]
+/* #[inline]
 pub fn _mm_rcp_ss(a: __m128) -> __m128 {
     unsafe { sse_rcp_ss(a) }
-}
+} */
 /// rcpps
 #[inline]
-pub fn _mm_rcp_ps(a: __m128) -> __m128 {
+/* pub fn _mm_rcp_ps(a: __m128) -> __m128 {
     a.approx_reciprocal()
-}
+} */
 /// rsqrtss
-#[inline]
+/* #[inline]
 pub fn _mm_rsqrt_ss(a: __m128) -> __m128 {
     unsafe { sse_rsqrt_ss(a) }
-}
+} */
 /// rsqrtps
 #[inline]
-pub fn _mm_rsqrt_ps(a: __m128) -> __m128 {
+/* pub fn _mm_rsqrt_ps(a: __m128) -> __m128 {
     a.approx_rsqrt()
-}
+} */
 /// minss
-#[inline]
+/* #[inline]
 pub fn _mm_min_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_min_ss(a, b) }
-}
+} */
 /// minps
 #[inline]
 pub fn _mm_min_ps(a: __m128, b: __m128) -> __m128 {
     a.min(b)
 }
 /// maxss
-#[inline]
+/* #[inline]
 pub fn _mm_max_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_max_ss(a, b) }
-}
+} */
 /// maxps
 #[inline]
 pub fn _mm_max_ps(a: __m128, b: __m128) -> __m128 {
@@ -197,147 +197,147 @@ pub fn _mm_xor_ps(a: __m128, b: __m128) -> __m128 {
     (a.as_i64x2() ^ b.as_i64x2()).as_f32x4()
 }
 /// cmpss
-#[inline]
+/* #[inline]
 pub fn _mm_cmpeq_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_cmp_ss(a, b, 0) }
-}
+} */
 /// cmpps
 #[inline]
-pub fn _mm_cmpeq_ps(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmpeq_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.eq(b))
-}
+} */
 /// cmpss
 #[inline]
-pub fn _mm_cmplt_ss(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmplt_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_cmp_ss(a, b, 1) }
-}
+} */
 /// cmpps
 #[inline]
-pub fn _mm_cmplt_ps(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmplt_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.lt(b))
-}
+} */
 /// cmpss
 #[inline]
-pub fn _mm_cmple_ss(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmple_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_cmp_ss(a, b, 2) }
-}
+} */
 /// cmpps
 #[inline]
-pub fn _mm_cmple_ps(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmple_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.le(b))
-}
+} */
 /// cmpss
 #[inline]
-pub fn _mm_cmpgt_ss(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmpgt_ss(a: __m128, b: __m128) -> __m128 {
     _mm_move_ss(a, _mm_cmplt_ss(b, a))
-}
+} */
 /// cmpps
 #[inline]
-pub fn _mm_cmpgt_ps(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmpgt_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.gt(b))
-}
+} */
 /// cmpss
 #[inline]
-pub fn _mm_cmpge_ss(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmpge_ss(a: __m128, b: __m128) -> __m128 {
     _mm_move_ss(a, _mm_cmple_ss(b, a))
-}
+} */
 /// cmpps
-#[inline]
+/* #[inline]
 pub fn _mm_cmpge_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.ge(b))
-}
+} */
 /// cmpss
-#[inline]
+/* #[inline]
 pub fn _mm_cmpneq_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_cmp_ss(a, b, 4) }
-}
+} */
 /// cmpps
-#[inline]
+/* #[inline]
 pub fn _mm_cmpneq_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.ne(b))
-}
+} */
 /// cmpss
-#[inline]
+/* #[inline]
 pub fn _mm_cmpnlt_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_cmp_ss(a, b, 5) }
-}
+} */
 /// cmpps
-#[inline]
+/* #[inline]
 pub fn _mm_cmpnlt_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.ge(b) | (a.ne(a) | b.ne(b)))
-}
+} */
 /// cmpss
-#[inline]
+/* #[inline]
 pub fn _mm_cmpnle_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_cmp_ss(a, b, 6) }
-}
+} */
 /// cmpps
-#[inline]
+/* #[inline]
 pub fn _mm_cmpnle_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.gt(b) | (a.ne(a) | b.ne(b)))
-}
+} */
 /// cmpss
-#[inline]
+/* #[inline]
 pub fn _mm_cmpngt_ss(a: __m128, b: __m128) -> __m128 {
     _mm_move_ss(a, _mm_cmpnlt_ss(b, a))
-}
+} */
 /// cmpps
 #[inline]
-pub fn _mm_cmpngt_ps(a: __m128, b: __m128) -> __m128 {
+/* pub fn _mm_cmpngt_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.le(b) | (a.ne(a) | b.ne(b)))
-}
+} */
 /// cmpss
-#[inline]
+/* #[inline]
 pub fn _mm_cmpnge_ss(a: __m128, b: __m128) -> __m128 {
     _mm_move_ss(a, _mm_cmpnle_ss(b, a))
-}
+} */
 /// cmpps
-#[inline]
+/* #[inline]
 pub fn _mm_cmpnge_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.lt(b) | (a.ne(a) | b.ne(b)))
-}
+} */
 /// cmpss
-#[inline]
+/* #[inline]
 pub fn _mm_cmpord_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_cmp_ss(a, b, 7) }
-}
+} */
 /// cmpps
-#[inline]
+/* #[inline]
 pub fn _mm_cmpord_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.eq(a) & b.eq(b))
-}
+} */
 /// cmpss
-#[inline]
+/* #[inline]
 pub fn _mm_cmpunord_ss(a: __m128, b: __m128) -> __m128 {
     unsafe { sse_cmp_ss(a, b, 3) }
-}
+} */
 /// cmpps
-#[inline]
+/* #[inline]
 pub fn _mm_cmpunord_ps(a: __m128, b: __m128) -> __m128 {
     convert_bool32fx4_to_m128(a.ne(a) | b.ne(b))
-}
+} */
 /// comiss
-#[inline]
+/* #[inline]
 pub fn _mm_comieq_ss(a: __m128, b: __m128) -> i32 {
     unsafe { sse_comieq_ss(a, b) }
-}
+} */
 /// comiss
-#[inline]
+/* #[inline]
 pub fn _mm_comilt_ss(a: __m128, b: __m128) -> i32 {
     unsafe { sse_comilt_ss(a, b) }
-}
+} */
 /// comiss
-#[inline]
+/* #[inline]
 pub fn _mm_comile_ss(a: __m128, b: __m128) -> i32 {
     unsafe { sse_comile_ss(a, b) }
-}
+} */
 /// comiss
-#[inline]
+/* #[inline]
 pub fn _mm_comigt_ss(a: __m128, b: __m128) -> i32 {
     unsafe { sse_comigt_ss(a, b) }
-}
+} */
 /// comiss
-#[inline]
+/* #[inline]
 pub fn _mm_comige_ss(a: __m128, b: __m128) -> i32 {
     unsafe { sse_comige_ss(a, b) }
 }
@@ -375,19 +375,19 @@ pub fn _mm_ucomige_ss(a: __m128, b: __m128) -> i32 {
 #[inline]
 pub fn _mm_ucomineq_ss(a: __m128, b: __m128) -> i32 {
     unsafe { sse_ucomineq_ss(a, b) }
-}
+} */
 /// cvtss2si
-#[inline]
+/* #[inline]
 pub fn _mm_cvtss_si32(a: __m128) -> i32 {
     unsafe { sse_cvtss2si(a) }
-}
+} */
 /// cvtss2si
-#[inline]
+/* #[inline]
 pub fn _mm_cvt_ss2si(a: __m128) -> i32 {
     _mm_cvtss_si32(a)
-}
+} */
 /// cvtss2si
-#[inline]
+/* #[inline]
 #[cfg(target_pointer_width = "64")]
 pub fn _mm_cvtss_si64(a: __m128) -> i64 {
     unsafe { sse_cvtss2si64(a) }
@@ -412,18 +412,18 @@ pub fn _mm_cvttss_si64(a: __m128) -> i64 {
 #[inline]
 pub fn _mm_cvtsi32_ss(a: __m128, b: i32) -> __m128 {
     unsafe { sse_cvtsi2ss(a, b) }
-}
+} */
 /// cvtsi2ss
-#[inline]
+/* #[inline]
 pub fn _mm_cvt_si2ss(a: __m128, b: i32) -> __m128 {
     _mm_cvtsi32_ss(a, b)
-}
+} */
 /// cvtsi2ss
-#[inline]
+/* #[inline]
 #[cfg(target_pointer_width = "64")]
 pub fn _mm_cvtsi64_ss(a: __m128, b: i64) -> __m128 {
     unsafe { sse_cvtsi642ss(a, b) }
-}
+} */
 #[inline]
 pub fn _mm_cvtss_f32(a: __m128) -> f32 {
     a.extract(0)
@@ -484,11 +484,11 @@ pub unsafe fn _mm_loadu_ps(p: *const f32) -> __m128 {
     copy_nonoverlapping(p, pa, 16);
     a
 }
-#[inline]
+/* #[inline]
 pub unsafe fn _mm_loadr_ps(p: *const f32) -> __m128 {
     let a = _mm_load_ps(p);
     simd_shuffle4(a, a, [3, 2, 1, 0])
-}
+} */
 #[inline]
 pub unsafe fn _mm_undefined_ps() -> __m128 {
     uninitialized()
@@ -571,7 +571,7 @@ pub unsafe fn _mm_storer_ps(p: *mut f32, a: __m128) {
     _mm_store_ps(p, __m128::new(a.extract(3), a.extract(2), a.extract(1), a.extract(0)));
 }
 /// sfence
-#[inline]
+/* #[inline]
 pub fn _mm_sfence() {
     unsafe { sse_sfence() }
 }
@@ -588,7 +588,7 @@ pub fn _mm_getcsr() -> u32 {
 #[inline]
 pub unsafe fn _mm_setcsr(i: u32) {
     sse_ldmxcsr(&i as *const u32 as *mut i8);
-}
+} */
 /// unpckhps
 #[inline]
 pub fn _mm_unpackhi_ps(a: __m128, b: __m128) -> __m128 {
@@ -617,10 +617,10 @@ pub fn _mm_movelh_ps(a: __m128, b: __m128) -> __m128 {
     __m128::new(a.extract(0), a.extract(1), b.extract(0), b.extract(1))
 }
 /// movmskps
-#[inline]
+/* #[inline]
 pub fn _mm_movemask_ps(a: __m128) -> i32 {
     unsafe { sse_movmsk_ps(a) }
-}
+} */
 /// shufps
 #[inline]
 pub fn _mm_shuffle_ps(a: __m128, b: __m128, imm8: u32) -> __m128 {
@@ -629,11 +629,11 @@ pub fn _mm_shuffle_ps(a: __m128, b: __m128, imm8: u32) -> __m128 {
     let a2 = (imm8 >> 2) & 3;
     let b1 = (imm8 >> 4) & 3;
     let b2 = (imm8 >> 6) & 3;
-    __m128::new(a.extract(a1), a.extract(a2), b.extract(b1), b.extract(b2))
+    __m128::new(a.extract(a1 as usize), a.extract(a2 as usize), b.extract(b1 as usize), b.extract(b2 as usize))
 }
 /// prefetchnta, prefetcht0, prefetcht1, prefetcht2
 #[inline]
-pub fn _mm_prefetch(p: *const i8, i: i32) {
+/* pub fn _mm_prefetch(p: *const i8, i: i32) {
     unsafe {
         match i {
             _MM_HINT_T0 => prefetch(p, 0, 3, 1),
@@ -642,7 +642,7 @@ pub fn _mm_prefetch(p: *const i8, i: i32) {
             _ => prefetch(p, 0, 0, 1),
         }
     }
-}
+} */
 #[inline]
 pub fn _MM_SHUFFLE(z: u32, y: u32, x: u32, w: u32) -> u32 {
     (z << 6) | (y << 4) | (x << 2) | w
@@ -700,7 +700,7 @@ pub mod unimplemented_nontemporal {
         unimplemented!()
     }
 }
-
+/*
 /// The methods in this module can't be implemented because Rust doesn't
 /// expose the LLVM x86_mmx type.
 pub mod unimplemented_mmx {
@@ -934,3 +934,4 @@ pub mod unimplemented_mmx {
         _mm_shuffle_pi16(a, imm8)
     }
 }
+ */

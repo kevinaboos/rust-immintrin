@@ -6,17 +6,17 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use std::mem::transmute;
+use core::mem::transmute;
 use __m128;
 use __m128i;
 use __m128d;
-use simd::x86::sse2::u64x2;
-use simd::i32x4;
-use simd::u32x4;
-use simd::i16x8;
-use simd::u16x8;
-use simd::i8x16;
-use simd::u8x16;
+use core::simd::u64x2;
+use core::simd::i32x4;
+use core::simd::u32x4;
+use core::simd::i16x8;
+use core::simd::u16x8;
+use core::simd::i8x16;
+use core::simd::u8x16;
 
 pub trait Convert128 : Sized {
     fn as_f32x4(self) -> __m128;

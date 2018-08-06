@@ -5,23 +5,24 @@
 // <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
-
+#![no_std]
 #![feature(repr_simd)]
 #![feature(link_llvm_intrinsics)]
 #![feature(platform_intrinsics)]
 #![feature(simd_ffi)]
-#![feature(cfg_target_feature)]
 
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
-extern crate simd;
-use simd::Simd;
+#![feature(stdsimd)]
+
+//extern crate simd;
+//use simd::Simd;
 
 #[cfg(target_feature="sse2")]
-use simd::f32x4;
+use core::simd::f32x4;
 #[cfg(target_feature="sse2")]
-use simd::x86::sse2::{f64x2, i64x2};
+use core::simd::{f64x2, i64x2};
 
 #[cfg(target_feature="sse2")]
 pub type __m128 = f32x4;
@@ -35,17 +36,12 @@ pub struct __m64(i64);
 
 #[cfg(target_feature="sse2")]
 pub mod xmmintrin;
-#[cfg(target_feature="sse2")]
-pub mod emmintrin;
-#[cfg(target_feature="sse3")]
-pub mod pmmintrin;
-#[cfg(target_feature="ssse3")]
-pub mod tmmintrin;
+
 #[cfg(target_feature="sse2")]
 mod conversions;
 
 // Copied from SIMD crate.
-#[allow(dead_code)]
+/* #[allow(dead_code)]
 extern "platform-intrinsic" {
     fn simd_eq<T: Simd<Bool = U>, U>(x: T, y: T) -> U;
     fn simd_ne<T: Simd<Bool = U>, U>(x: T, y: T) -> U;
@@ -73,4 +69,4 @@ extern "platform-intrinsic" {
     fn simd_and<T: Simd>(x: T, y: T) -> T;
     fn simd_or<T: Simd>(x: T, y: T) -> T;
     fn simd_xor<T: Simd>(x: T, y: T) -> T;
-}
+} */
