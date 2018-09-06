@@ -616,6 +616,21 @@ pub fn _mm_movelh_ps(a: __m128, b: __m128) -> __m128 {
     // (This actually generates unpcklpd if SSE2 is available.)
     __m128::new(a.extract(0), a.extract(1), b.extract(0), b.extract(1))
 }
+
+/// 2 emmintrin functions converted for f32x4
+/// TODO: fix conversions problem and use original versions in emmintrin
+/// TODO: fix conversions problem and use original versions in emmintrin
+/// unpcklpd
+#[inline]
+pub fn _mm_unpacklo_pd(a: __m128, b: __m128) -> __m128 {
+    __m128::new(a.extract(0), a.extract(1), b.extract(0), b.extract(1))
+}
+
+/// unpckhpd
+#[inline]
+pub fn _mm_unpackhi_pd(a: __m128, b: __m128) -> __m128 {
+    __m128::new(a.extract(2), a.extract(3), b.extract(2), b.extract(3) )
+}
 /// movmskps
 /* #[inline]
 pub fn _mm_movemask_ps(a: __m128) -> i32 {
