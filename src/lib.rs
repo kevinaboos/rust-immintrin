@@ -19,25 +19,25 @@
 //extern crate simd;
 //use simd::Simd;
 
-#[cfg(target_feature="sse2")]
+// #[cfg(target_feature="sse2")]
 use core::simd::f32x4;
-#[cfg(target_feature="sse2")]
+// #[cfg(target_feature="sse2")]
 use core::simd::{f64x2, i64x2};
 
-#[cfg(target_feature="sse2")]
+// #[cfg(target_feature="sse2")]
 pub type __m128 = f32x4;
-#[cfg(target_feature="sse2")]
+// #[cfg(target_feature="sse2")]
 pub type __m128d = f64x2;
-#[cfg(target_feature="sse2")]
+// #[cfg(target_feature="sse2")]
 pub type __m128i = i64x2;
 #[repr(simd)]
 #[derive(Debug, Copy, Clone)]
 pub struct __m64(i64);
 
-#[cfg(target_feature="sse2")]
+// #[cfg(target_feature="sse2")]
 pub mod xmmintrin;
 
-#[cfg(target_feature="sse2")]
+// #[cfg(target_feature="sse2")]
 mod conversions;
 
 // Copied from SIMD crate.
