@@ -10,13 +10,13 @@ use core::mem::transmute;
 use __m128;
 use __m128i;
 use __m128d;
-use core::simd::u64x2;
-use core::simd::i32x4;
-use core::simd::u32x4;
-use core::simd::i16x8;
-use core::simd::u16x8;
-use core::simd::i8x16;
-use core::simd::u8x16;
+use packed_simd::u64x2;
+use packed_simd::i32x4;
+use packed_simd::u32x4;
+use packed_simd::i16x8;
+use packed_simd::u16x8;
+use packed_simd::i8x16;
+use packed_simd::u8x16;
 
 pub trait Convert128 : Sized {
     fn as_f32x4(self) -> __m128;

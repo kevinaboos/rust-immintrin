@@ -16,13 +16,13 @@
 
 #![feature(stdsimd)]
 
-//extern crate simd;
+extern crate packed_simd;
 //use simd::Simd;
 
 // #[cfg(target_feature="sse2")]
-use core::simd::f32x4;
+use packed_simd::f32x4;
 // #[cfg(target_feature="sse2")]
-use core::simd::{f64x2, i64x2};
+use packed_simd::{f64x2, i64x2};
 
 // #[cfg(target_feature="sse2")]
 pub type __m128 = f32x4;

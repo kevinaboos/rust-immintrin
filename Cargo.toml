@@ -12,4 +12,4 @@ Implementation of Intel x86 intrinsics (_mm_*).
 """
 
 [dependencies]
-
+packed_simd = "0.3.1"

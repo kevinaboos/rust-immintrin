@@ -12,7 +12,7 @@ use conversions::Convert128;
 use core::mem::transmute;
 use core::mem::uninitialized;
 use core::ptr::copy_nonoverlapping;
-use core::simd::f32x4;
+use packed_simd::f32x4;
 use __m128;
 use __m128i;
 use __m64;
