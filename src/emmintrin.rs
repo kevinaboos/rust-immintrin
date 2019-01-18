@@ -879,10 +879,10 @@ pub fn _mm_set1_epi16(a: i16) -> __m128i {
 // pub fn _mm_setr_epi16(e7: i16, e6: i16, e5: i16, e4: i16, e3: i16, e2: i16, e1: i16, e0: i16) -> __m128i {
 //     i16x8::new(e7, e6, e5, e4, e3, e2, e1, e0).as_i64x2()
 // }
-// #[inline]
-// pub fn _mm_setr_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
-//     i32x4::new(e3, e2, e1, e0).as_i64x2()
-// }
+#[inline]
+pub fn _mm_setr_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
+    i32x4::new(e3, e2, e1, e0).as_i64x2()
+}
 // #[inline]
 // pub fn _mm_setr_epi8(e15: i8, e14: i8, e13: i8, e12: i8, e11: i8, e10: i8, e9: i8, e8: i8, e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
 //     i8x16::new(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0).as_i64x2()
