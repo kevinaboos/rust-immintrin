@@ -15,17 +15,18 @@ use conversions::Convert128;
 use __m128;
 use __m128i;
 use __m128d;
-use packed_simd::i32x4;
-use packed_simd::i16x8;
-use packed_simd::i8x16;
+use packed_simd::*;
+// use packed_simd::i32x4;
+// use packed_simd::i16x8;
+// use packed_simd::i8x16;
 // use simd::x86::sse2::bool64fx2;
 use core::intrinsics::copy_nonoverlapping;
 use core::mem::transmute;
 use core::mem::uninitialized;
-use simd_shuffle2;
-use simd_shuffle4;
-use simd_shuffle8;
-use simd_shuffle16;
+// use packed_simd::simd_shuffle2;
+// use packed_simd::simd_shuffle4;
+// use packed_simd::__shuffle_vector8;
+// use packed_simd::simd_shuffle16;
 
 // // Declarations copied from the llvmint crate.
 // #[allow(improper_ctypes)]
@@ -1402,7 +1403,7 @@ pub fn _mm_setr_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
 pub fn _mm_unpackhi_epi16(a: __m128i, b: __m128i) -> __m128i {
     let a = a.as_i16x8();
     let b = b.as_i16x8();
-    let r: i16x8 = unsafe { simd_shuffle8(a, b, [4, 12, 5, 13, 6, 14, 7, 15]) };
+    let r: i16x8 = unsafe {shuffle!(a, b, [4, 12, 5, 13, 6, 14, 7, 15]) };
     r.as_i64x2()
 }
 // /// punpckhdq
@@ -1437,7 +1438,7 @@ pub fn _mm_unpackhi_epi16(a: __m128i, b: __m128i) -> __m128i {
 pub fn _mm_unpacklo_epi16(a: __m128i, b: __m128i) -> __m128i {
     let a = a.as_i16x8();
     let b = b.as_i16x8();
-    let r: i16x8 = unsafe { simd_shuffle8(a, b, [0, 8, 1, 9, 2, 10, 3, 11]) };
+    let r: i16x8 = unsafe { shuffle!(a, b, [0, 8, 1, 9, 2, 10, 3, 11]) };
     r.as_i64x2()
 }
 // /// punpckldq
